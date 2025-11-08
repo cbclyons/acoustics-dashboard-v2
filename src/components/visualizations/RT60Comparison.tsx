@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import {
   BarChart,
   Bar,
@@ -11,9 +12,13 @@ import {
 } from 'recharts'
 import { useAcoustics } from '../../context/AcousticsContext'
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card'
+import { Button } from '../ui/button'
+import { Download, FileDown } from 'lucide-react'
+import { exportToCSV, exportChartAsPNG, generateFilename } from '../../lib/utils/export'
 
 export function RT60Comparison() {
   const { currentRT60, predictedRT60 } = useAcoustics()
+  const chartRef = useRef<HTMLDivElement>(null)
 
   // Prepare data for chart
   const data = Object.keys(currentRT60).map((freq) => ({
@@ -23,12 +28,40 @@ export function RT60Comparison() {
     target: 0.3, // ITU-R BS.1116 target
   }))
 
+  // Export handlers
+  const handleExportCSV = () => {
+    exportToCSV(data, generateFilename('rt60-comparison', 'csv'))
+  }
+
+  const handleExportPNG = async () => {
+    const svgElement = chartRef.current?.querySelector('svg')
+    if (svgElement) {
+      try {
+        await exportChartAsPNG(svgElement, generateFilename('rt60-comparison', 'png'))
+      } catch (error) {
+        console.error('Export failed:', error)
+      }
+    }
+  }
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>RT60 Comparison (Before/After Treatment)</CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle>RT60 Comparison (Before/After Treatment)</CardTitle>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={handleExportCSV} className="gap-2">
+              <FileDown className="h-4 w-4" />
+              Export CSV
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleExportPNG} className="gap-2">
+              <Download className="h-4 w-4" />
+              Export PNG
+            </Button>
+          </div>
+        </div>
       </CardHeader>
-      <CardContent>
+      <CardContent ref={chartRef}>
         <ResponsiveContainer width="100%" height={350}>
           <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />

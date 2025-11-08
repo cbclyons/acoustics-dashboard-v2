@@ -2,9 +2,11 @@ import { PageLayout } from '../components/layout/PageLayout'
 import { RoomModel3D } from '../components/visualizations/RoomModel3D'
 import { useAcoustics } from '../context/AcousticsContext'
 import { MEASUREMENT_POSITIONS, getSTIQualityLabel } from '../lib/utils/positions'
+import { Button } from '../components/ui/button'
+import { GitCompare } from 'lucide-react'
 
 export function Visualizer() {
-  const { selectedPosition } = useAcoustics()
+  const { selectedPosition, comparisonMode, toggleComparisonMode } = useAcoustics()
   const positionData = MEASUREMENT_POSITIONS[selectedPosition]
 
   return (
@@ -13,6 +15,18 @@ export function Visualizer() {
       description="Interactive 3D visualization of Studio 8 with measurement positions"
     >
       <div className="space-y-4">
+        {/* Comparison Mode Toggle */}
+        <div className="flex justify-end">
+          <Button
+            variant={comparisonMode ? 'default' : 'outline'}
+            onClick={toggleComparisonMode}
+            className="gap-2"
+          >
+            <GitCompare className="h-4 w-4" />
+            {comparisonMode ? 'Exit' : 'Enable'} Comparison Mode
+          </Button>
+        </div>
+
         {/* Selected Position Info */}
         {positionData && (
           <div className="rounded-lg border bg-card p-4">

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useRef } from 'react'
 import {
   LineChart,
   Line,
@@ -15,11 +15,15 @@ import { generateFrequencyResponse, getRoomModes } from '../../lib/data/frequenc
 import { MEASUREMENT_POSITIONS, getSTIColor } from '../../lib/utils/positions'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../ui/select'
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card'
+import { Button } from '../ui/button'
+import { Download, FileDown } from 'lucide-react'
+import { exportToCSV, exportChartAsPNG, generateFilename } from '../../lib/utils/export'
 
 export function FrequencyExplorer() {
   const { selectedPosition, setSelectedPosition } = useAcoustics()
   const [showModalAnalysis, setShowModalAnalysis] = useState(true)
   const [freqRange, setFreqRange] = useState<[number, number]>([20, 20000])
+  const chartRef = useRef<HTMLDivElement>(null)
 
   // Generate frequency response data
   const frequencyData = useMemo(() => generateFrequencyResponse(), [])
@@ -33,6 +37,27 @@ export function FrequencyExplorer() {
   // Get reference position color
   const referenceColor = '#10b981' // green
   const selectedColor = getSTIColor(MEASUREMENT_POSITIONS[selectedPosition]?.degradation || 0)
+
+  // Export handlers
+  const handleExportCSV = () => {
+    const csvData = filteredData.map(d => ({
+      Frequency: d.frequency,
+      'Reference (Host A)': d['Host A (Reference)'],
+      [selectedPosition]: d[selectedPosition],
+    }))
+    exportToCSV(csvData, generateFilename('frequency-response', 'csv'))
+  }
+
+  const handleExportPNG = async () => {
+    const svgElement = chartRef.current?.querySelector('svg')
+    if (svgElement) {
+      try {
+        await exportChartAsPNG(svgElement, generateFilename('frequency-response', 'png'))
+      } catch (error) {
+        console.error('Export failed:', error)
+      }
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -103,9 +128,21 @@ export function FrequencyExplorer() {
       {/* Frequency Response Chart */}
       <Card>
         <CardHeader>
-          <CardTitle>Frequency Response Curves</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle>Frequency Response Curves</CardTitle>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={handleExportCSV} className="gap-2">
+                <FileDown className="h-4 w-4" />
+                Export CSV
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleExportPNG} className="gap-2">
+                <Download className="h-4 w-4" />
+                Export PNG
+              </Button>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent>
+        <CardContent ref={chartRef}>
           <ResponsiveContainer width="100%" height={400}>
             <LineChart data={filteredData} margin={{ top: 5, right: 30, left: 20, bottom: 50 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />

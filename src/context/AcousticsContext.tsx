@@ -41,6 +41,7 @@ interface AcousticsState {
   // UI state
   viewMode: '2D' | '3D'
   showModalAnalysis: boolean
+  comparisonMode: boolean
 }
 
 interface AcousticsActions {
@@ -50,6 +51,7 @@ interface AcousticsActions {
   setDrapeRemoval: (remove: boolean) => void
   toggleViewMode: () => void
   toggleModalAnalysis: () => void
+  toggleComparisonMode: () => void
   resetPanelConfig: () => void
 }
 
@@ -71,6 +73,7 @@ export function AcousticsProvider({ children }: { children: ReactNode }) {
   const [drapeRemoval, setDrapeRemoval] = useState(true)
   const [viewMode, setViewMode] = useState<'2D' | '3D'>('3D')
   const [showModalAnalysis, setShowModalAnalysis] = useState(false)
+  const [comparisonMode, setComparisonMode] = useState(false)
 
   // Calculate metrics from current configuration
   const roomData = STUDIO_8 // Could expand to support The Hub later
@@ -133,6 +136,10 @@ export function AcousticsProvider({ children }: { children: ReactNode }) {
     setShowModalAnalysis(prev => !prev)
   }
 
+  const toggleComparisonMode = () => {
+    setComparisonMode(prev => !prev)
+  }
+
   const value: AcousticsContextType = {
     // State
     selectedRoom,
@@ -147,6 +154,7 @@ export function AcousticsProvider({ children }: { children: ReactNode }) {
     totalPanels,
     viewMode,
     showModalAnalysis,
+    comparisonMode,
 
     // Actions
     setSelectedRoom,
@@ -155,6 +163,7 @@ export function AcousticsProvider({ children }: { children: ReactNode }) {
     setDrapeRemoval,
     toggleViewMode,
     toggleModalAnalysis,
+    toggleComparisonMode,
     resetPanelConfig,
   }
 
