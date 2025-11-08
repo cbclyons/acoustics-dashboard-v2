@@ -1,8 +1,9 @@
 import { PageLayout } from '../components/layout/PageLayout'
 import { useAcoustics } from '../context/AcousticsContext'
-import { Sliders, Info, BarChart3 } from 'lucide-react'
+import { Sliders, Info } from 'lucide-react'
 import { cn } from '../lib/utils/cn'
 import { classifySTI } from '../lib/acoustics'
+import { RT60Comparison } from '../components/visualizations/RT60Comparison'
 
 export function Simulator() {
   const {
@@ -184,14 +185,8 @@ export function Simulator() {
         </div>
       </div>
 
-      {/* Visualization Placeholder */}
-      <div className="rounded-lg border bg-card p-12 flex flex-col items-center justify-center min-h-[300px]">
-        <BarChart3 className="h-12 w-12 text-muted-foreground mb-3" />
-        <h3 className="font-semibold mb-2">RT60 Comparison Chart</h3>
-        <p className="text-sm text-muted-foreground text-center max-w-md">
-          Before/after RT60 frequency response will be displayed here in Sprint 3
-        </p>
-      </div>
+      {/* RT60 Comparison Visualization */}
+      <RT60Comparison />
     </PageLayout>
   )
 }
