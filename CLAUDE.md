@@ -2,8 +2,8 @@
 
 **Workspace:** Inherits conventions from `~/chrislyons/dev/CLAUDE.md`
 **Documentation PREFIX:** ACU
-**Original Implementation:** https://github.com/chrislyons/cbc-acoustics-dashboard
-**Live Site (v1):** https://cbc-acoustics-dashboard.streamlit.app/
+**Original Implementation:** https://github.com/cbclyons/acoustics-dashboard-v2
+**Prototype Site:** https://acoustics-dashboard-v2.streamlit.app/
 
 ---
 
@@ -41,7 +41,7 @@ Key components to analyze:
 
 **BEFORE large refactors:**
 1. Run `/context` to check token usage
-2. Archive docs >63 days old: `bash ~/dev/scripts/archive-old-docs.sh cbc-acoustics-v2 ACU`
+2. Archive docs >63 days old: `bash ~/dev/scripts/archive-old-docs.sh acoustics-dashboard-v2 ACU`
 3. Enter Plan Mode (Shift+Tab twice) for analysis tasks
 
 **Doc reading priority:** ACU### sprint docs → v1 reference implementation → data schemas
@@ -272,8 +272,8 @@ Claude Code **must consult** Chris on:
 ## References
 
 - **Original v1 code:** `/Users/chrislyons/Documents/CL/dev/std8/cbc-interactive-dashboard/`
-- **Live v1 site:** https://cbc-acoustics-dashboard.streamlit.app/
-- **GitHub v1:** https://github.com/chrislyons/cbc-acoustics-dashboard
+- **Live v1 site:** https://acoustics-dashboard-v2.streamlit.app/
+- **GitHub v1:** https://github.com/chrislyons/acoustics-dashboard-v2
 - **Workspace config:** `~/chrislyons/dev/CLAUDE.md`
 - **Skill templates:** `~/dev/.claude/skill-templates/`
 
