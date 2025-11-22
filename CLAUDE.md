@@ -3,7 +3,7 @@
 **Workspace:** Inherits conventions from `~/chrislyons/dev/CLAUDE.md`
 **Documentation PREFIX:** ACU
 **Original Implementation:** https://github.com/cbclyons/acoustics-dashboard-v2
-**Prototype Site:** https://acoustics-dashboard-v2.streamlit.app/
+**Prototype Site:** https://cbc-acoustics-dashboard.streamlit.app/
 
 ---
 
